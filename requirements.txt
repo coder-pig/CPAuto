@@ -1,0 +1,7 @@
+requests==2.24.0
+numpy==1.22.4
+opencv_python==4.5.5.64
+airtest==1.2.6
+Pillow==9.1.1
+poco==0.98.1
+PySimpleGUI==4.60.1
