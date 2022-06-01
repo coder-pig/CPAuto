@@ -91,6 +91,9 @@ def task_status():
             task_wrapper.cur_count = 0
         if task_wrapper.sum_count is None:
             task_wrapper.cur_count = 3
+        # 任务描述可能混入其他的东西，重置保证准确性
+        if task_wrapper.task_desc is None or task_counter_pattern.search(task_wrapper.task_desc) is not None:
+            task_wrapper.task_desc = ""
         task_wrapper.task_desc = ocr_replace_index_pattern.sub(r"\g<1>", task_desc_temp).replace(" ", "")
         task_wrapper_list.append(task_wrapper)
     if len(task_wrapper_list) == 0:
@@ -111,7 +114,7 @@ def task_status():
         wrapper.show()
         task_list = wrapper.generate_task_list()
         for task in task_list:
-            sleep(3)
+            sleep(4)
             task.start()
     task_status()
 
@@ -143,17 +146,20 @@ class TaskWrapper:
         if len(self.task_desc) != 0:
             if self.have_all_sub_string(['浏览', "关注", "8s", "8000"]):
                 return 'BrowseAttention8sTask()'
-            elif self.have_all_sub_string(['浏览', "4000"]):
-                return 'ZhongCaoTask()'
-            elif self.have_all_sub_string(['浏览', "8s", "7000"]):
+            elif self.have_all_sub_string(['览', "8s"]):
                 return 'Browse8sTask()'
-            elif self.have_all_sub_string(['浏览', "4个", "5000"]):
+            elif self.have_all_sub_string(['览', '5', "4000"]):
+                self.sum_count = 1
+                return 'BrowserBoutiqueShopTask()'
+            elif self.have_all_sub_string(['览', "4000"]):
+                return 'ZhongCaoTask()'
+            elif self.have_all_sub_string(['览', "4个", "5000"]):
                 self.sum_count = 1
                 return 'Browser4Commodity()'
             elif self.have_all_sub_string(['览', "加购", "4个", "4000"]):
                 self.sum_count = 1
                 return 'AddOnBrowser4Commodity()'
-            elif self.have_all_sub_string(['入会', "浏览", "3000"]):
+            elif self.have_all_sub_string(['会', "览", "3000"]):
                 return 'JoinAndBrowser()'
             elif self.have_all_sub_string(['浏览', "关注", "3000"]):
                 return 'FocusOnAndBrowserTask()'

@@ -105,7 +105,7 @@ class Browser4Commodity(Task):
     def doing(self):
         touch(self.to_finish_position())
         # 静待片刻等待加载完毕
-        sleep(3)
+        sleep(4)
         for click_pos in self.click_pos_tuple:
             # 坐标加上随机数，不然每次点同一个位置，太假了
             touch((click_pos[0] + random.randint(0, 10), click_pos[1] + random.randint(0, 10)))
@@ -129,13 +129,13 @@ class AddOnBrowser4Commodity(Task):
     def doing(self):
         touch(self.to_finish_position())
         # 静待片刻等待加载完毕
-        sleep(3)
+        sleep(4)
         for click_pos in self.click_pos_tuple:
             # 坐标加上随机数，不然每次点同一个位置，太假了
             touch((click_pos[0] + random.randint(0, 10), click_pos[1] + random.randint(0, 10)))
             sleep(2)
             keyevent("KEYCODE_BACK")
-            sleep(2)
+            sleep(3)
         keyevent("KEYCODE_BACK")
 
 
@@ -145,7 +145,7 @@ class JoinAndBrowser(Task):
 
     def doing(self):
         touch(self.to_finish_position())
-        sleep(2)
+        sleep(3)
         keyevent("KEYCODE_BACK")
 
 
@@ -183,7 +183,7 @@ class ZhongCaoTask(Task):
                 break
         for i in range(0, 4):
             sleep(2)
-            touch((int((like_node[0] + like_node[2]) / 2), int((like_node[1] + like_node[3]) / 2)))
+            touch((int((like_node[0] + like_node[2]) / 2), int(like_node[1] + like_node[3]) / 2))
             sleep(3)
             keyevent("KEYCODE_BACK")
         keyevent("KEYCODE_BACK")
@@ -210,20 +210,20 @@ class BrowserBoutiqueShopTask(Task):
 
     def doing(self):
         touch(self.to_finish_position())
-        sleep(5)
+        sleep(3)
         snapshot_path = os.path.join(temp_save_dir, snapshot()['screen'])
         ocr_dict = ocr_utils.picture_local_ocr(snapshot_path)
         shop_node_count = 0
         for ocr_key in ocr_dict.keys():
             if shop_node_count < 6 and ocr_dict[ocr_key][1] > int(Android().get_current_resolution()[1] / 2):
-                touch(int((ocr_dict[ocr_key][1][0] + ocr_dict[ocr_key][1][2]) / 2),
-                      int((ocr_dict[ocr_key][1][1] + ocr_dict[ocr_key][1][3]) / 2))
+                touch((int((ocr_dict[ocr_key][0] + ocr_dict[ocr_key][2]) / 2),
+                      int((ocr_dict[ocr_key][1] + ocr_dict[ocr_key][3]) / 2)))
                 shop_node_count += 1
                 sleep(3)
                 keyevent("KEYCODE_BACK")
                 sleep(2)
         for i in range(1, 10):
-            shell("input swipe 534 1492 534 1600")
+            shell("input swipe 534 1000 534 1400")
 
 
 class WithdrawalTask(Task):
